@@ -1,0 +1,55 @@
+units:
+# keycap dimension
+  kx: 18
+  ky: 18
+# spread/padding
+  pad: 0.2
+  ks: kx + pad
+  kp: ky + pad
+# switch dimension
+  sw_pad: 0.2
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
+points:
+  zones:
+    matrix:
+      key:
+        spread: 1ks
+        padding: 1kp
+      columns:
+        pinky:
+        ring:
+          key.splay: -5
+          key.origin: [-12, -16]
+          key.stagger: 11
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -2
+      rows:
+        bottom:
+        home:
+        top:
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-10, -30]
+      columns:
+        near:
+          key.splay: -6
+        home:
+          key.spread: 19
+          key.splay: -38
+          key.origin: [-10, -9]
+        far:
+          key.spread: 19
+          key.splay: -32
+          key.origin: [-9.5, -9]
+      rows:
+        thumb:
+  rotate: -10
+  mirror:
+    ref: matrix_pinky_home
+    distance: 284

@@ -284,68 +284,12 @@ More natural position for thumbs I would say would be "shift: [-3, -30]" for reg
 ## **Keys positions with personal changes**
 <img src="./resources/keycaps.svg" alt="keycap position">
 
-```yml
-units:
-# keycap dimension
-  kx: 18
-  ky: 18
-# spread/padding
-  pad: 0.2
-  ks: kx + pad
-  kp: ky + pad
-# switch dimension
-  sw_pad: 0.2
-  sx: 14 + sw_pad
-  sy: 14 + sw_pad
-points:
-  zones:
-    matrix:
-      key:
-        spread: 1ks
-        padding: 1kp
-      columns:
-        pinky:
-        ring:
-          key.splay: -5
-          key.origin: [-12, -16]
-          key.stagger: 11
-        middle:
-          key.stagger: 5
-        index:
-          key.stagger: -6
-        inner:
-          key.stagger: -2
-      rows:
-        bottom:
-        home:
-        top:
-    thumbfan:
-      anchor:
-        ref: matrix_inner_bottom
-        shift: [-10, -30]
-      columns:
-        near:
-          key.splay: -6
-        home:
-          key.spread: 19
-          key.splay: -38
-          key.origin: [-10, -9]
-        far:
-          key.spread: 19
-          key.splay: -32
-          key.origin: [-9.5, -9]
-      rows:
-        thumb:
-  rotate: -10
-  mirror:
-    ref: matrix_pinky_home
-    distance: 284
-```
+Basic config: [part1_basics.yml](./part1_basics.yml)
 
 
 # Outlines (Shapes)
 
-Next thing to do it to draw some shape around keys. This is basis for building 3d printed case and PCBs later on.
+Next thing to do it to draw some shape around keys. This is basis for building 3d printed case and PCBs later on. Also, it's not only about drawing shapes around keys, it's also possible to visualize switch positions. Notice how size is changed to sx, sy (switch size + padding)
 <img src="./resources/switches.svg" alt="switch position">
 
 ```yml
@@ -359,3 +303,195 @@ outlines:
 
 How to visualize this in web tool? On right side click preview next to switches.dxf
 <img src="./resources/download_web_tool.png" alt="downloads">
+
+Drawing around:
+
+## Box
+
+One could try to draw a box around by referencing pinky positions like:
+```yml
+...
+outlines:
+...
+  box:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky_top
+        - ref: matrix_pinky_bottom
+        - ref: mirror_matrix_pinky_bottom
+        - ref: mirror_matrix_pinky_top
+```
+Defining a couple more simple shapes for debugging proposes:
+```yml
+...
+outlines:
+...
+# same as keyboard layout (notice minus padding)
+raw:
+    - what: rectangle
+      where: true
+      size: [kx,ky]
+...
+# useful to debug one on top of other
+combo_box_raw:
+    - name: box
+    - operation: stack
+      name: raw
+```
+<img src="./resources/combo_box_raw.svg" alt="combo box with raw">
+
+Not really desired behavior. 
+
+Fix X direction
+```yml
+...
+outlines:
+...
+  box:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky_top
+          # ks is from units, can be combine with mathops
+          # notice how -ks here
+          shift: [-ks,0]
+        - ref: matrix_pinky_bottom
+          shift: [-ks,0]
+          # on mirror is inverted (still -ks)
+          # one would assume here should be +ks
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-ks,0]
+        - ref: mirror_matrix_pinky_top
+          shift: [-ks,0]
+```
+<img src="./resources/x_combo_box_raw.svg" alt="x combo box with raw">
+
+Fix Y direction
+```yml
+...
+outlines:
+...
+  box:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky_top
+          shift: [-ks,ky]
+        - ref: matrix_pinky_bottom
+          shift: [-ks,-100]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-ks,-100]
+        - ref: mirror_matrix_pinky_top
+          shift: [-ks,ky]
+```
+<img src="./resources/y_combo_box_raw.svg" alt="y combo box with raw">
+
+Thats the basics, now one has to improve quality by adding more points. 
+
+**TIP:** To create a 3d printed case later on, one has to create 2 similar shapes, one a little bigger then the other. These shapes are then combine with **"operation: subtract"**.\
+To achieve this with ease one should reference ks/ky variable unit in **shift** - variables can then easily replaced by different ones with higher size. Also, try to use 1x and not multiples like 0.8, 2x etc. Some manual adjustments are usually needed at the end...
+
+**3D print Tip:** Most 3d printer wont be able to create both cases at once, keyboard must be split in half. So, when creating a outlines just do it around left part and not right - this makes life easer in Thinkercad.
+
+## Case (Polygon with a lot of points)
+<img src="./resources/combo_case_switches.svg" alt="combo case with switches">
+
+```yml
+outlines:
+  switches:
+    - what: rectangle
+      where: true
+      size: [sx,sy]
+
+  case:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sx,0.8sy]
+        - ref: matrix_pinky_bottom
+          shift: [-sx,-sy]
+        - ref: matrix_middle_bottom
+          shift: [0,-1.8sy]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sx,-sy]
+        - ref: thumbfan_home_thumb
+          shift: [0,-sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx,-sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx, sy]
+        # bottom middle 
+        - ref: thumbfan_far_thumb
+          shift: [-sx, 2sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx, 4.5sy]
+        # top middle 
+        - ref: thumbfan_far_thumb
+          shift: [-7sx, 4.5sy]   
+        - ref: matrix_inner_top
+          shift: [2sx, 0.5sy]
+        - ref: matrix_index_top
+          shift: [0, 1.4sy]
+        - ref: matrix_ring_top
+          shift: [0, 1.3sy]
+      # round corners
+      fillet: 4
+          
+  combo_box_raw:
+    - name: case
+    - operation: stack
+      name: switches
+```
+
+Finally to cut out the switch holes:
+<img src="./resources/case_cut_switches.svg" alt="case cut switches">
+
+```yml
+outlines:
+  ...
+  case_cut_switches:
+    - name: case
+    - operation: subtract
+      name: switches
+```
+
+Lets define new units (sxs & sys 2mm smaller then sx & sy). New shape case_small will use these to create case sides:
+<img src="./resources/case_cut_case_small.svg" alt="case cut case small">
+
+
+Manual adjustments (beside replacing sx => sxs & sy => sys)
+```diff
+@@ -8,7 +8,7 @@ case_small:
+         - ref: matrix_pinky_bottom
+           shift: [-sxs,-sys]
+         - ref: matrix_middle_bottom
+-          shift: [0,-1.8sys]
++          shift: [0.8,-1.9sys]
+         # thumb
+         - ref: thumbfan_near_thumb
+           shift: [-sxs,-sys]
+@@ -20,14 +20,14 @@ case_small:
+           shift: [sxs, sys]
+         # bottom middle 
+         - ref: thumbfan_far_thumb
+-          shift: [-sxs, 2sys]
++          shift: [-1.4sxs, 2.2sys]
+         - ref: thumbfan_far_thumb
+-          shift: [-sxs, 4.5sys]
++          shift: [-1.4sxs, 4.9sys]
+         # top middle 
+         - ref: thumbfan_far_thumb
+-          shift: [-7sxs, 4.5sys]   
++          shift: [-7.9sxs, 4.9sys]   
+         - ref: matrix_inner_top
+-          shift: [2sxs, 0.5sys]
++          shift: [2.3sxs, 0.4sys]
+         - ref: matrix_index_top
+           shift: [0, 1.4sys]
+```
+
+Config with outlines: [part2_with_outlines.yml](./part2_with_outlines.yml)

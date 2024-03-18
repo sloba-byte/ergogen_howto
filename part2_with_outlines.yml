@@ -1,0 +1,156 @@
+units:
+# keycap dimension
+  kx: 18
+  ky: 18
+# spread/padding
+  pad: 0.2
+  ks: kx + pad
+  kp: ky + pad
+# switch dimension
+  sw_pad: 0.2
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
+
+# for case sides 2mm
+  side_thick: 2
+  sxs: sx - side_thick
+  sys: sx - side_thick
+
+points:
+  zones:
+    matrix:
+      key:
+        spread: 1ks
+        padding: 1kp
+      columns:
+        pinky:
+        ring:
+          key.splay: -5
+          key.origin: [-12, -16]
+          key.stagger: 11
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -2
+      rows:
+        bottom:
+        home:
+        top:
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-10, -30]
+      columns:
+        near:
+          key.splay: -6
+        home:
+          key.spread: 19
+          key.splay: -38
+          key.origin: [-10, -9]
+        far:
+          key.spread: 19
+          key.splay: -32
+          key.origin: [-9.5, -9]
+      rows:
+        thumb:
+  rotate: -10
+  mirror:
+    ref: matrix_pinky_home
+    distance: 284
+
+outlines:
+  switches:
+    - what: rectangle
+      where: true
+      size: [sx,sy]
+
+  case:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sx,0.8sy]
+        - ref: matrix_pinky_bottom
+          shift: [-sx,-sy]
+        - ref: matrix_middle_bottom
+          shift: [0,-1.8sy]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sx,-sy]
+        - ref: thumbfan_home_thumb
+          shift: [0,-sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx,-sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx, sy]
+        # bottom middle 
+        - ref: thumbfan_far_thumb
+          shift: [-sx, 2sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx, 4.5sy]
+        # top middle 
+        - ref: thumbfan_far_thumb
+          shift: [-7sx, 4.5sy]   
+        - ref: matrix_inner_top
+          shift: [2sx, 0.5sy]
+        - ref: matrix_index_top
+          shift: [0, 1.4sy]
+        - ref: matrix_ring_top
+          shift: [0, 1.3sy]
+      # round corners
+      fillet: 4
+
+  combo_box_raw:
+    - name: case
+    - operation: stack
+      name: switches
+
+  case_cut_switches:
+    - name: case
+    - operation: subtract
+      name: switches
+
+  case_small:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sxs,0.8sys]
+        - ref: matrix_pinky_bottom
+          shift: [-sxs,-sys]
+        - ref: matrix_middle_bottom
+          shift: [0.8,-1.9sys]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sxs,-sys]
+        - ref: thumbfan_home_thumb
+          shift: [0,-sys]
+        - ref: thumbfan_far_thumb
+          shift: [sxs,-sys]
+        - ref: thumbfan_far_thumb
+          shift: [sxs, sys]
+        # bottom middle 
+        - ref: thumbfan_far_thumb
+          shift: [-1.4sxs, 2.2sys]
+        - ref: thumbfan_far_thumb
+          shift: [-1.4sxs, 4.9sys]
+        # top middle 
+        - ref: thumbfan_far_thumb
+          shift: [-7.9sxs, 4.9sys]   
+        - ref: matrix_inner_top
+          shift: [2.3sxs, 0.4sys]
+        - ref: matrix_index_top
+          shift: [0, 1.4sys]
+        - ref: matrix_ring_top
+          shift: [0, 1.3sys]
+      # round corners
+      fillet: 4
+
+  combo_case_sides:
+    - name: case
+    - operation: subtract
+      name: case_small
