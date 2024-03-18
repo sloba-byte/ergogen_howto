@@ -14,6 +14,7 @@ Visualization while building yml config is better done on [unofficial](https://e
 ## [Absolem](https://zealot.hu/absolem/)
 
 Best to start with simplified Absolem keyboard (found in web tool)
+<img src="./resources/absolem.svg" alt="absolem layout">
 
 ```yml
 points:
@@ -168,7 +169,7 @@ points:
 ```
 
 Cartesian coordinate system:
-<img src="cartesian_system.svg" alt="coordinate system">
+<img src="./resources/cartesian_system.svg" alt="coordinate system">
 
 Everything so far connected together.
 ## **Keys positions**
@@ -281,7 +282,7 @@ P.S. My hands are shifted by 1 column to the outside.\
 More natural position for thumbs I would say would be "shift: [-3, -30]" for regular person instead of mine "shift: [-10, -30]".
 
 ## **Keys positions with personal changes**
-<img src="keycaps.svg" alt="keycap position">
+<img src="./resources/keycaps.svg" alt="keycap position">
 
 ```yml
 units:
@@ -345,7 +346,7 @@ points:
 # Outlines (Shapes)
 
 Next thing to do it to draw some shape around keys. This is basis for building 3d printed case and PCBs later on.
-<img src="switches.svg" alt="switch position">
+<img src="./resources/switches.svg" alt="switch position">
 
 ```yml
 ...
@@ -357,4 +358,4 @@ outlines:
 ```
 
 How to visualize this in web tool? On right side click preview next to switches.dxf
-<img src="download_web_tool.png" alt="downloads">
+<img src="./resources/download_web_tool.png" alt="downloads">
