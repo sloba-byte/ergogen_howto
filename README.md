@@ -224,3 +224,111 @@ points:
     ref: matrix_pinky_home
     distance: 223.7529778
 ```
+
+Some updates to keys position:
+- mirror distance:
+```diff
+mirror:
+  ref: matrix_pinky_home
+- distance: 223.7529778
++ distance: 284
+```
+- rotate:
+```diff
+- rotate: -15
++ rotate: -10
+```
+- ring 
+```diff
+ring:
+  key.splay: -5
+- key.origin: [-12, -19]
++ key.origin: [-12, -16]
+- key.stagger: 12
++ key.stagger: 11
+```
+- thumbfan:
+```diff
+thumbfan:
+       anchor:
+         ref: matrix_inner_bottom
+-        shift: [-7, -19]
++        shift: [-10, -30]
+       columns:
+         near:
++          key.splay: -6
+         home:
+-          key.spread: 21.25
+-          key.splay: -28
+-          key.origin: [-11.75, -9]
++          key.spread: 19
++          key.splay: -38
++          key.origin: [-10, -9]
+         far:
+-          key.spread: 21.25
+-          key.splay: -28
++          key.spread: 19
++          key.splay: -32
+           key.origin: [-9.5, -9]
+       rows:
+         thumb:
+```
+P.S. My hands are shifted by 1 column to the outside.\
+More natural position for thumbs I would say would be "shift: [-3, -30]" for regular person instead of mine "shift: [-10, -30]".
+
+## **Keys positions with personal changes**
+```yml
+units:
+# keycap dimension
+  kx: 18
+  ky: 18
+# spread/padding
+  ks: kx + 0.2
+  kp: ky + 0.2
+# switch dimension
+  sx: 14
+  sy: 14
+points:
+  zones:
+    matrix:
+      key:
+        spread: 1ks
+        padding: 1kp
+      columns:
+        pinky:
+        ring:
+          key.splay: -5
+          key.origin: [-12, -16]
+          key.stagger: 11
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -2
+      rows:
+        bottom:
+        home:
+        top:
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-10, -30]
+      columns:
+        near:
+          key.splay: -6
+        home:
+          key.spread: 19
+          key.splay: -38
+          key.origin: [-10, -9]
+        far:
+          key.spread: 19
+          key.splay: -32
+          key.origin: [-9.5, -9]
+      rows:
+        thumb:
+  rotate: -10
+  mirror:
+    ref: matrix_pinky_home
+    distance: 284
+```
