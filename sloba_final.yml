@@ -1,0 +1,241 @@
+units:
+  # Proxy Spacing Variables
+  kx: cx
+  ky: cy
+  # Padding Variables
+  px: kx + 2
+  py: ky + 2
+
+  pxx: kx + 6
+  pyy: ky + 6
+
+  kyy: ky+1.2
+  kxx: kx+0.2
+
+points:
+  zones:
+    matrix:
+      # Choc spacing
+      key:
+        padding: 1kyy
+        spread: 1kxx
+      anchor:
+        rotate: 5
+      columns:
+        pinky:
+        ring:
+          key.splay: -5
+          key.origin: [-12, -16]
+          key.stagger: 11
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -2
+      rows:
+        bottom:
+        home:
+        top:
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-10, -30]
+      columns:
+        near:
+          key.splay: -6
+        home:
+          key.spread: 19
+          key.splay: -38
+          key.origin: [-10, -9]
+        far:
+          key.spread: 19
+          key.splay: -32
+          key.origin: [-9.5, -9]
+      rows:
+        thumb:
+  rotate: -15
+  mirror:
+    ref: matrix_pinky_home
+    distance: 283.7529778
+
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      size: 18+2*(8+1)
+  keys:
+    - what: rectangle
+      where: true
+      size: [kxx-4,kyy-4]
+      #for the key it-self
+  caps:
+    - what: rectangle
+      where: true
+      size: [kxx-2,kyy-2]
+      #for the key it-self
+  middle:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_middle_home
+          shift: [0, 10]
+        - ref: mirror_matrix_middle_home
+          shift: [0, 10]
+        - ref: mirror_thumbfan_far_thumb
+          shift: [18, 13]
+        - ref: thumbfan_far_thumb
+          shift: [18, 13]
+  combo:
+    - name: middle
+    - operation: stack
+      name: raw
+      fillet: 3
+  precise:
+    - what: polygon
+      operation: stack
+      points:
+        # left upper
+        - ref: matrix_pinky_top
+          shift: [-px/2,py/2]
+        - ref: matrix_pinky_bottom
+          shift: [-px/2,-py/2]
+        - ref: matrix_middle_bottom
+          shift: [0,-py*1.3]
+        # thumbs
+        - ref: thumbfan_near_thumb
+          shift: [-px/2,-py/2]
+        - ref: thumbfan_home_thumb
+          shift: [0,-py/2]
+        - ref: thumbfan_far_thumb
+          shift: [px/2,-py/2]
+        # between thumbs
+        - ref: thumbfan_far_thumb
+          shift: [0.5px,0.5py]
+        - ref: thumbfan_far_thumb
+          shift: [-0.5px,2py]
+        - ref: mirror_thumbfan_far_thumb
+          shift: [-0.5px,2py]
+        - ref: mirror_thumbfan_far_thumb
+          shift: [0.5px,0.5py]
+        # mirror thumbs (in rev ord)
+        - ref: mirror_thumbfan_far_thumb
+          shift: [px/2,-py/2]
+        - ref: mirror_thumbfan_home_thumb
+          shift: [0,-py/2]
+        - ref: mirror_thumbfan_near_thumb
+          shift: [-px/2,-py/2]
+        # mirror left upper (in rev ord)
+        - ref: mirror_matrix_middle_bottom
+          shift: [0,-py*1.3]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-px/2,-py/2]
+        - ref: mirror_matrix_pinky_top
+          shift: [-px/2,0.5py]
+        # mirror right upper (in rev ord)
+        - ref: mirror_matrix_ring_top
+          shift: [0,0.8py]
+        - ref: mirror_matrix_index_top
+          shift: [0,0.8py]
+        - ref: mirror_matrix_inner_top
+          shift: [0,0.7py]
+        # middle top 
+        - ref: mirror_matrix_inner_top
+          shift: [2px,-0.1py]
+        - ref: matrix_inner_top
+          shift: [2px,-0.1py]
+        # and back to right side
+        - ref: matrix_inner_top
+          shift: [0,0.7py]
+        - ref: matrix_index_top
+          shift: [0,0.8py]
+        - ref: matrix_ring_top
+          shift: [0,0.8py]
+      fillet: 4
+  oPrecise:
+    - what: polygon
+      operation: stack
+      points:
+        # left upper
+        - ref: matrix_pinky_top
+          shift: [-pxx/2,pyy/2]
+        - ref: matrix_pinky_bottom
+          shift: [-pxx/2,-pyy/2]
+        - ref: matrix_middle_bottom
+          shift: [0,-pyy*1.3]
+        # thumbs
+        - ref: thumbfan_near_thumb
+          shift: [-pxx/2,-pyy/2]
+        - ref: thumbfan_home_thumb
+          shift: [0,-pyy/2]
+        - ref: thumbfan_far_thumb
+          shift: [pxx/2,-pyy/2]
+        # between thumbs
+        - ref: thumbfan_far_thumb
+          shift: [0.5pxx,0.5pyy]
+        - ref: thumbfan_far_thumb
+          shift: [-0.5pxx,2pyy]
+        - ref: mirror_thumbfan_far_thumb
+          shift: [-0.5pxx,2pyy]
+        - ref: mirror_thumbfan_far_thumb
+          shift: [0.5pxx,0.5pyy]
+        # mirror thumbs (in rev ord)
+        - ref: mirror_thumbfan_far_thumb
+          shift: [pxx/2,-pyy/2]
+        - ref: mirror_thumbfan_home_thumb
+          shift: [0,-pyy/2]
+        - ref: mirror_thumbfan_near_thumb
+          shift: [-pxx/2,-pyy/2]
+        # mirror left upper (in rev ord)
+        - ref: mirror_matrix_middle_bottom
+          shift: [0,-pyy*1.3]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-pxx/2,-pyy/2]
+        - ref: mirror_matrix_pinky_top
+          shift: [-pxx/2,0.5pyy]
+        # mirror right upper (in rev ord)
+        - ref: mirror_matrix_ring_top
+          shift: [0,0.8pyy]
+        - ref: mirror_matrix_index_top
+          shift: [0,0.8pyy]
+        - ref: mirror_matrix_inner_top
+          shift: [0,0.7pyy]
+        # middle top 
+        - ref: mirror_matrix_inner_top
+          shift: [2pxx,-0.1pyy]
+        - ref: matrix_inner_top
+          shift: [2pxx,-0.1pyy]
+        # and back to right side
+        - ref: matrix_inner_top
+          shift: [0,0.7pyy]
+        - ref: matrix_index_top
+          shift: [0,0.8pyy]
+        - ref: matrix_ring_top
+          shift: [0,0.8pyy]
+      fillet: 4
+    
+  comboOuter:
+    - name: oPrecise
+    - operation: stack
+      name: precise
+      
+  comboKeys:
+    - name: precise
+    - operation: stack
+      name: keys
+  comboCaps:
+    - name: precise
+    - operation: stack
+      name: caps
+          
+
+cases:
+  bottom:
+    - name: comboKeys
+      extrude: 1.20
+  bottom_caps:
+    - name: comboCaps
+      extrude: 0.76
+  bottom_clean:
+    - name: precise
+      extrude: 1
