@@ -144,14 +144,16 @@ units:
 # keycap dimension x and y
   kx: 18
   ky: 18
+  pad: 0.2
 # spread (in +-x direction)
-  ks: kx + 0.2
+  ks: kx + pad
 # padding (in +-y direction)
-  kp: ky + 0.2
+  kp: ky + pad
+# padding, change this to find right setting for your 3d printer
+  sw_pad: 0.2
 # switch dimensions x and y
-  sx: 14
-  sy: 14
-  
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
 points:
   zones:
     matrix:
@@ -176,11 +178,13 @@ units:
   kx: 18
   ky: 18
 # spread/padding
-  ks: kx + 0.2
-  kp: ky + 0.2
+  pad: 0.2
+  ks: kx + pad
+  kp: ky + pad
 # switch dimension
-  sx: 14
-  sy: 14
+  sw_pad: 0.2
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
 points:
   zones:
     matrix:
@@ -277,17 +281,21 @@ P.S. My hands are shifted by 1 column to the outside.\
 More natural position for thumbs I would say would be "shift: [-3, -30]" for regular person instead of mine "shift: [-10, -30]".
 
 ## **Keys positions with personal changes**
+<img src="keycaps.svg" alt="keycap position">
+
 ```yml
 units:
 # keycap dimension
   kx: 18
   ky: 18
 # spread/padding
-  ks: kx + 0.2
-  kp: ky + 0.2
+  pad: 0.2
+  ks: kx + pad
+  kp: ky + pad
 # switch dimension
-  sx: 14
-  sy: 14
+  sw_pad: 0.2
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
 points:
   zones:
     matrix:
@@ -332,3 +340,21 @@ points:
     ref: matrix_pinky_home
     distance: 284
 ```
+
+
+# Outlines (Shapes)
+
+Next thing to do it to draw some shape around keys. This is basis for building 3d printed case and PCBs later on.
+<img src="switches.svg" alt="switch position">
+
+```yml
+...
+outlines:
+  switches:
+    - what: rectangle
+      where: true
+      size: [sx,sy]
+```
+
+How to visualize this in web tool? On right side click preview next to switches.dxf
+<img src="download_web_tool.png" alt="downloads">
