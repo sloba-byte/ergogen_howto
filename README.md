@@ -168,7 +168,7 @@ points:
 ```
 
 Cartesian coordinate system:
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Cartesian-coordinate-system.svg/1280px-Cartesian-coordinate-system.svg.png" alt="coordinate system">
+<img src="cartesian_system.svg" alt="coordinate system">
 
 Everything so far connected together.
 ## **Keys positions**
