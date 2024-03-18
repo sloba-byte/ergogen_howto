@@ -1,6 +1,6 @@
 # Ergogen how-to
 
-![keys](keys.jpeg "Keys")
+![keys](./resources/keys.jpeg "Keys")
 
 Based on [ergogen](https://github.com/ergogen/ergogen) and flatfootfox tutorials:\
 [units](https://flatfootfox.com/ergogen-part1-units-points/)\
