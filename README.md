@@ -464,7 +464,7 @@ outlines:
       name: switches
 ```
 
-Lets define new unit "side:0". New shape case_small will use these to create case sides:
+Lets define new unit "side:2". New shape case_small will use these to create case sides:
 <img src="./resources/case_cut_case_small.svg" alt="case cut case small">
 
 
