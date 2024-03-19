@@ -12,9 +12,8 @@ units:
   sy: 14 + sw_pad
 
 # for case sides 2mm
-  side_thick: 2
-  sxs: sx - side_thick
-  sys: sx - side_thick
+  z: 0
+  side: 2
 
 points:
   zones:
@@ -72,38 +71,38 @@ outlines:
       points:
         # left
         - ref: matrix_pinky_top
-          shift: [-sx,0.8sy]
+          shift: [-sx+z,0.8sy-z]
         - ref: matrix_pinky_bottom
-          shift: [-sx,-sy]
+          shift: [-sx+z,-sy+z]
         - ref: matrix_middle_bottom
-          shift: [0,-1.8sy]
+          shift: [0+z,-1.8sy+z]
         # thumb
         - ref: thumbfan_near_thumb
-          shift: [-sx,-sy]
+          shift: [-sx+z,-sy+z]
         - ref: thumbfan_home_thumb
-          shift: [0,-sy]
+          shift: [0+z,-sy+z]
         - ref: thumbfan_far_thumb
-          shift: [sx,-sy]
+          shift: [sx-z,-sy+z]
         - ref: thumbfan_far_thumb
-          shift: [sx, sy]
+          shift: [sx-z, sy-z]
         # bottom middle 
         - ref: thumbfan_far_thumb
-          shift: [-sx, 2sy]
+          shift: [-sx+z, 2sy-z]
         - ref: thumbfan_far_thumb
-          shift: [-sx, 4.5sy]
+          shift: [-sx+z, 4.5sy-z]
         # top middle 
         - ref: thumbfan_far_thumb
-          shift: [-7sx, 4.5sy]   
+          shift: [-7sx+z, 4.5sy-z]   
         - ref: matrix_inner_top
-          shift: [2sx, 0.5sy]
+          shift: [2sx-z, 0.5sy-z]
         - ref: matrix_index_top
-          shift: [0, 1.4sy]
+          shift: [0+z, 1.4sy-z]
         - ref: matrix_ring_top
-          shift: [0, 1.3sy]
+          shift: [0+z, 1.3sy-z]
       # round corners
       fillet: 4
 
-  combo_box_raw:
+  combo_case_switches:
     - name: case
     - operation: stack
       name: switches
@@ -119,34 +118,34 @@ outlines:
       points:
         # left
         - ref: matrix_pinky_top
-          shift: [-sxs,0.8sys]
+          shift: [-sx+side,0.8sy-side]
         - ref: matrix_pinky_bottom
-          shift: [-sxs,-sys]
+          shift: [-sx+side,-sy+side]
         - ref: matrix_middle_bottom
-          shift: [0.8,-1.9sys]
+          shift: [0+side,-1.8sy+side]
         # thumb
         - ref: thumbfan_near_thumb
-          shift: [-sxs,-sys]
+          shift: [-sx+side,-sy+side]
         - ref: thumbfan_home_thumb
-          shift: [0,-sys]
+          shift: [0+0.2side,-sy+side]
         - ref: thumbfan_far_thumb
-          shift: [sxs,-sys]
+          shift: [sx-side,-sy+side]
         - ref: thumbfan_far_thumb
-          shift: [sxs, sys]
+          shift: [sx-side, sy-side]
         # bottom middle 
         - ref: thumbfan_far_thumb
-          shift: [-1.4sxs, 2.2sys]
+          shift: [-sx-side, 2sy-side]
         - ref: thumbfan_far_thumb
-          shift: [-1.4sxs, 4.9sys]
+          shift: [-sx-side, 4.5sy-1.5side]
         # top middle 
         - ref: thumbfan_far_thumb
-          shift: [-7.9sxs, 4.9sys]   
+          shift: [-7sx+side, 4.5sy-1.5side]   
         - ref: matrix_inner_top
-          shift: [2.3sxs, 0.4sys]
+          shift: [2sx-0.2side, 0.5sy-side]
         - ref: matrix_index_top
-          shift: [0, 1.4sys]
+          shift: [0-0.2side, 1.4sy-side]
         - ref: matrix_ring_top
-          shift: [0, 1.3sys]
+          shift: [0+0.2side, 1.3sy-side]
       # round corners
       fillet: 4
 

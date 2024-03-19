@@ -390,7 +390,12 @@ outlines:
 Thats the basics, now one has to improve quality by adding more points. 
 
 **TIP:** To create a 3d printed case later on, one has to create 2 similar shapes, one a little bigger then the other. These shapes are then combine with **"operation: subtract"**.\
-To achieve this with ease one should reference ks/ky variable unit in **shift** - variables can then easily replaced by different ones with higher size. Also, try to use 1x and not multiples like 0.8, 2x etc. Some manual adjustments are usually needed at the end...
+Easiest way to achive this is to add one more variable in the mix, call it z: 0. Now follow simple rules:
+1) If negative shift add: +z
+2) If positive shift add: -z
+3) If zero shift add: +z
+After, one can define a new variable "side: 2" and replace +z & -z with +side & -size.\
+There will be some small work to be done (change some from + to - and fix some corners by making 0.2side or 0.3side). The above 3 step heuristic is gonna give 80% correctness and it's very simple.
 
 **3D print Tip:** Most 3d printer wont be able to create both cases at once, keyboard must be split in half. So, when creating a outlines just do it around left part and not right - this makes life easer in Thinkercad.
 
@@ -410,34 +415,34 @@ outlines:
       points:
         # left
         - ref: matrix_pinky_top
-          shift: [-sx,0.8sy]
+          shift: [-sx+z,0.8sy-z]
         - ref: matrix_pinky_bottom
-          shift: [-sx,-sy]
+          shift: [-sx+z,-sy+z]
         - ref: matrix_middle_bottom
-          shift: [0,-1.8sy]
+          shift: [0+z,-1.8sy+z]
         # thumb
         - ref: thumbfan_near_thumb
-          shift: [-sx,-sy]
+          shift: [-sx+z,-sy+z]
         - ref: thumbfan_home_thumb
-          shift: [0,-sy]
+          shift: [0+z,-sy+z]
         - ref: thumbfan_far_thumb
-          shift: [sx,-sy]
+          shift: [sx-z,-sy+z]
         - ref: thumbfan_far_thumb
-          shift: [sx, sy]
+          shift: [sx-z, sy-z]
         # bottom middle 
         - ref: thumbfan_far_thumb
-          shift: [-sx, 2sy]
+          shift: [-sx+z, 2sy-z]
         - ref: thumbfan_far_thumb
-          shift: [-sx, 4.5sy]
+          shift: [-sx+z, 4.5sy-z]
         # top middle 
         - ref: thumbfan_far_thumb
-          shift: [-7sx, 4.5sy]   
+          shift: [-7sx+z, 4.5sy-z]   
         - ref: matrix_inner_top
-          shift: [2sx, 0.5sy]
+          shift: [2sx-z, 0.5sy-z]
         - ref: matrix_index_top
-          shift: [0, 1.4sy]
+          shift: [0+z, 1.4sy-z]
         - ref: matrix_ring_top
-          shift: [0, 1.3sy]
+          shift: [0+z, 1.3sy-z]
       # round corners
       fillet: 4
           
@@ -459,39 +464,44 @@ outlines:
       name: switches
 ```
 
-Lets define new units (sxs & sys 2mm smaller then sx & sy). New shape case_small will use these to create case sides:
+Lets define new unit "side:0". New shape case_small will use these to create case sides:
 <img src="./resources/case_cut_case_small.svg" alt="case cut case small">
 
 
-Manual adjustments (beside replacing sx => sxs & sy => sys)
+Manual adjustments of case_small (beside replacing +z => +side & -z => -side)
 ```diff
-@@ -8,7 +8,7 @@ case_small:
-         - ref: matrix_pinky_bottom
-           shift: [-sxs,-sys]
-         - ref: matrix_middle_bottom
--          shift: [0,-1.8sys]
-+          shift: [0.8,-1.9sys]
-         # thumb
+case_small:
          - ref: thumbfan_near_thumb
-           shift: [-sxs,-sys]
-@@ -20,14 +20,14 @@ case_small:
-           shift: [sxs, sys]
+           shift: [-sx+side,-sy+side]
+         - ref: thumbfan_home_thumb
+-          shift: [0+side,-sy+side]
++          shift: [0+0.2side,-sy+side]
+         - ref: thumbfan_far_thumb
+           shift: [sx-side,-sy+side]
+         - ref: thumbfan_far_thumb
+           shift: [sx-side, sy-side]
          # bottom middle 
          - ref: thumbfan_far_thumb
--          shift: [-sxs, 2sys]
-+          shift: [-1.4sxs, 2.2sys]
+-          shift: [-sx+side, 2sy-side]
++          shift: [-sx-side, 2sy-side]
          - ref: thumbfan_far_thumb
--          shift: [-sxs, 4.5sys]
-+          shift: [-1.4sxs, 4.9sys]
+-          shift: [-sx+side, 4.5sy-side]
++          shift: [-sx-side, 4.5sy-1.5side]
          # top middle 
          - ref: thumbfan_far_thumb
--          shift: [-7sxs, 4.5sys]   
-+          shift: [-7.9sxs, 4.9sys]   
+-          shift: [-7sx+side, 4.5sy-side]   
++          shift: [-7sx+side, 4.5sy-1.5side]   
          - ref: matrix_inner_top
--          shift: [2sxs, 0.5sys]
-+          shift: [2.3sxs, 0.4sys]
+-          shift: [2sx-side, 0.5sy-side]
++          shift: [2sx-0.2side, 0.5sy-side]
          - ref: matrix_index_top
-           shift: [0, 1.4sys]
+-          shift: [0+side, 1.4sy-side]
++          shift: [0-0.2side, 1.4sy-side]
+         - ref: matrix_ring_top
+-          shift: [0+side, 1.3sy-side]
++          shift: [0+0.2side, 1.3sy-side]
+       # round corners
+       fillet: 4
 ```
 
 Config with outlines: [part2_with_outlines.yml](./part2_with_outlines.yml)
