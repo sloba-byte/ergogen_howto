@@ -505,3 +505,91 @@ case_small:
 ```
 
 Config with outlines: [part2_with_outlines.yml](./part2_with_outlines.yml)
+
+# Cases (stl for 3d print or similar)
+**Cases can only be visualized in web tool unfriendly - offline process must be used to generate proper stl files**
+
+Shapes can be transform by combining & extruding to make simple 3d models.
+
+Below is example of extruding sides by 5mm:
+
+```yml
+...
+cases:
+  sides:
+    - name: case_sides
+      extrude: 5
+```
+**To visualize must click manually generate now in web tool**
+
+Switch plate:
+
+```yml
+...
+cases:
+...
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+```
+
+Combine into case:
+
+```yml
+...
+cases:
+...
+  case:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+```
+
+This yield rather thin switch plate, only 1.2mm, however this is no arbitrary number, it's from [switch spec](./resources/gateron_mx_lowprofile_switch.png). It's height from middle of switch to plastic prongs(hooks).\
+To make plate thicker (2mm) new outline and "plate" is specified:
+
+```yml
+...
+outlines:
+switches_pad:
+    - what: rectangle
+      where: true
+      size: [sx+2,sy+2]
+case_cut_switches_pad:
+    - name: case
+    - operation: subtract
+      name: switches_pad
+...
+cases:
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.8
+      shift: [0,0,1.2]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  case:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+```
+Notice how sides are extruded now a lot more = 2cm - this is for later manual Thinkercad angle adding.\
+New shifting is introduced with 3 coordinates (x, y, z) as now it's in 3d space. Case is a combination of sides + plate + switch_plates. switch_plate is 0 from base and has 1.2mm thickness, and then plate is 1.2 from base and has 0.8 thickness and finally sides are 20mm thick and it's 2mm from base.
+
+Config with cases: [part3_with_cases.yml](./part3_with_cases.yml)

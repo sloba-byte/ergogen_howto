@@ -65,6 +65,11 @@ outlines:
       where: true
       size: [sx,sy]
 
+  switches_pad:
+    - what: rectangle
+      where: true
+      size: [sx+2,sy+2]
+
   case:
     - what: polygon
       operation: stack
@@ -111,6 +116,11 @@ outlines:
     - name: case
     - operation: subtract
       name: switches
+  
+  case_cut_switches_pad:
+    - name: case
+    - operation: subtract
+      name: switches_pad
 
   case_small:
     - what: polygon
@@ -153,3 +163,29 @@ outlines:
     - name: case
     - operation: subtract
       name: case_small
+
+cases:
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.8
+      shift: [0,0,1.2]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  case:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
