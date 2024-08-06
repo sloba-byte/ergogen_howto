@@ -593,3 +593,19 @@ Notice how sides are extruded now a lot more = 2cm - this is for later manual Th
 New shifting is introduced with 3 coordinates (x, y, z) as now it's in 3d space. Case is a combination of sides + plate + switch_plates. switch_plate is 0 from base and has 1.2mm thickness, and then plate is 1.2 from base and has 0.8 thickness and finally sides are 20mm thick and it's 2mm from base.
 
 Config with cases: [part3_with_cases.yml](./part3_with_cases.yml)
+
+## 3d stl files (local)
+
+```shell
+# install globaly
+npm i -g ergogen 
+
+# run this to generate files in outputs/* folder
+ergogen config.yaml
+
+# Generate a switch plate (holes for switches that should fit in)
+npx @jscad/cli@1 output/cases/switch_plate.jscad -of stla -o switches.stl
+
+# Generate whole case (ready for thinkercad to be customized)
+npx @jscad/cli@1 output/cases/case.jscad -of stla -o case.stl
+```
