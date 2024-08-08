@@ -108,6 +108,27 @@ outlines:
       # round corners
       fillet: 4
 
+  hole:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, -sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, -sy]
+      # round corners
+      fillet: 4
+
+  switch_cut_hole:
+    - name: hole
+    - operation: subtract
+      name: switches   
+
   combo_case_switches:
     - name: case
     - operation: stack
@@ -166,6 +187,10 @@ outlines:
       name: case_small
 
 cases:
+  switch_hole:
+    - name: switch_cut_hole
+      extrude: 1.2
+
   switch_plate:
     - name: case_cut_switches
       extrude: 1.2

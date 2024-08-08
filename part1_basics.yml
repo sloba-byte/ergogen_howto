@@ -3,9 +3,10 @@ units:
   kx: 18
   ky: 18
 # spread/padding
-  pad: 0.2
-  ks: kx + pad
-  kp: ky + pad
+  pad_x: 0.2
+  pad_y: 0.2
+  ks: kx + pad_x
+  kp: ky + pad_y
 # switch dimension
   sw_pad: 0.2
   sx: 14 + sw_pad

@@ -145,11 +145,13 @@ units:
 # keycap dimension x and y
   kx: 18
   ky: 18
-  pad: 0.2
+
+  pad_x: 0.2
+  pad_y: 0.2
 # spread (in +-x direction)
-  ks: kx + pad
+  ks: kx + pad_x
 # padding (in +-y direction)
-  kp: ky + pad
+  kp: ky + pad_y
 # padding, change this to find right setting for your 3d printer
   sw_pad: 0.2
 # switch dimensions x and y
@@ -179,9 +181,10 @@ units:
   kx: 18
   ky: 18
 # spread/padding
-  pad: 0.2
-  ks: kx + pad
-  kp: ky + pad
+  pad_x: 0.2
+  pad_y: 0.2
+  ks: kx + pad_x
+  kp: ky + pad_y
 # switch dimension
   sw_pad: 0.2
   sx: 14 + sw_pad
@@ -594,7 +597,71 @@ New shifting is introduced with 3 coordinates (x, y, z) as now it's in 3d space.
 
 Config with cases: [part3_with_cases.yml](./part3_with_cases.yml)
 
-## 3d stl files (local)
+# Switch hole 3d print tunning
+
+```yml
+units:
+...
+# switch dimension
+  sw_pad: 0.2
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
+```
+
+**sw_pad** variable is there for 3d printer adjustments. Based on nozzle size, profile, 3d printer this needs to be tune.
+
+Adding 1x switch hole so can be 3d printed in isolation
+
+```yml
+...
+outlines:
+
+...
+
+hole:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, -sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, -sy]
+      # round corners
+      fillet: 4
+
+  switch_cut_hole:
+    - name: hole
+    - operation: subtract
+      name: switches  
+
+...
+
+cases:
+  switch_hole:
+    - name: switch_cut_hole
+      extrude: 1.2
+
+...
+
+```
+
+1. Import hole.stl to slicer and multiple by 4. Middle one leave at 100%, to the left go 98 and 96, and to the right 102 and 104.
+
+2. Once done test with switch and see were it fits.
+
+3. Calculate new **sw_pad** value: 
+   - Current switch hole size = 14 + sw_pad(0.2)
+   - lets say 102% is best => 14.2 * 1.02 = 14.484
+   - new sw_pad = 0.484
+
+4. Now print again (will have to do 2-3 times) just 1 hole and now fine tune sw_pad value by changing it in ergogen directly.
+
+# 3d stl files (local)
 
 ```shell
 # install globaly
@@ -602,6 +669,9 @@ npm i -g ergogen
 
 # run this to generate files in outputs/* folder
 ergogen config.yaml
+
+# Generate a switch hole (to tune sw_pad variable)
+npx @jscad/cli@1 output/cases/switch_hole.jscad -of stla -o hole.stl
 
 # Generate a switch plate (holes for switches that should fit in)
 npx @jscad/cli@1 output/cases/switch_plate.jscad -of stla -o switches.stl
