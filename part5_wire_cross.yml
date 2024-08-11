@@ -16,6 +16,12 @@ units:
   z: 0
   side: 2
 
+# wire dimensions
+  wire_x: 6
+  wire_y: ky-sx
+  hole_y: 0.8
+  hole_90_y: 1.2
+
 points:
   zones:
     matrix:
@@ -66,6 +72,11 @@ outlines:
       where: true
       size: [sx,sy]
 
+  switches_pad:
+    - what: rectangle
+      where: true
+      size: [sx+2,sy+2]
+
   case:
     - what: polygon
       operation: stack
@@ -103,6 +114,27 @@ outlines:
       # round corners
       fillet: 4
 
+  hole:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, -sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, -sy]
+      # round corners
+      fillet: 4
+
+  switch_cut_hole:
+    - name: hole
+    - operation: subtract
+      name: switches   
+
   combo_case_switches:
     - name: case
     - operation: stack
@@ -112,6 +144,11 @@ outlines:
     - name: case
     - operation: subtract
       name: switches
+  
+  case_cut_switches_pad:
+    - name: case
+    - operation: subtract
+      name: switches_pad
 
   case_small:
     - what: polygon
@@ -121,26 +158,26 @@ outlines:
         - ref: matrix_pinky_top
           shift: [-sx+side,0.8sy-side]
         - ref: matrix_pinky_bottom
-          shift: [-sx+side,-0.98sy+side]
+          shift: [-sx+side,-sy+side]
         - ref: matrix_middle_bottom
-          shift: [0+side,-1.78sy+side]
+          shift: [0+side,-1.8sy+side]
         # thumb
         - ref: thumbfan_near_thumb
           shift: [-sx+side,-sy+side]
         - ref: thumbfan_home_thumb
-          shift: [0+0.2side,-0.95sy+side]
+          shift: [0+0.2side,-sy+side]
         - ref: thumbfan_far_thumb
           shift: [sx-side,-sy+side]
         - ref: thumbfan_far_thumb
           shift: [sx-side, sy-side]
-        # bottom middle
+        # bottom middle 
         - ref: thumbfan_far_thumb
           shift: [-sx-side, 2sy-side]
         - ref: thumbfan_far_thumb
           shift: [-sx-side, 4.5sy-1.5side]
-        # top middle
+        # top middle 
         - ref: thumbfan_far_thumb
-          shift: [-7sx+side, 4.5sy-1.5side]
+          shift: [-7sx+side, 4.5sy-1.5side]   
         - ref: matrix_inner_top
           shift: [2sx-0.2side, 0.5sy-side]
         - ref: matrix_index_top
@@ -154,3 +191,120 @@ outlines:
     - name: case
     - operation: subtract
       name: case_small
+
+  # for test wire cross
+  pod:
+    - what: rectangle
+      size: [20, 20]
+
+  wire_base:
+    - what: rectangle
+      size: [wire_x, wire_y]
+
+  wire_hole:
+    - what: rectangle
+      size: [wire_x, hole_y]
+  
+  wire_hole_90:
+    - what: rectangle
+      size: [wire_y, hole_90_y]
+
+  # all wire cross
+  # TODO
+
+cases:
+  switch_hole:
+    - name: switch_cut_hole
+      extrude: 1.2
+
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.8
+      shift: [0,0,1.2]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  case:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+  
+  wire_test_pod:
+    - name: pod
+      extrude: 0.5
+  
+  wire_test_base:
+    - name: wire_base
+      extrude: 4
+      shift: [0,0,0.5]
+  
+  wire_test_hole:
+    - name: wire_hole
+      extrude: 6
+      shift: [0,0,1]
+  
+  wire_test_hole_90:
+    - name: wire_hole_90
+      extrude: 6
+      shift: [0,0, 3]
+      rotate: [0,0,90]
+  
+  wire_test_bridge_90:
+    - name: wire_hole_90
+      extrude: 0.3
+      shift: [0,0, 2.7]
+      rotate: [0,0,90]
+  
+  wire_test:
+    - what: case
+      name: wire_test_pod
+      operation: add
+
+    # 1
+    - what: case
+      name: wire_test_base
+      operation: add
+      shift: [0,-5,0] 
+    - what: case
+      name: wire_test_hole
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_test_hole_90
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_test_bridge_90
+      operation: add
+      shift: [0,-5,0] 
+
+    # 2
+    - what: case
+      name: wire_test_base
+      operation: add
+      shift: [0,5,0] 
+    - what: case
+      name: wire_test_hole
+      operation: subtract
+      shift: [0,5,0]
+    - what: case
+      name: wire_test_hole_90
+      operation: subtract
+      shift: [0,5,0]
+    - what: case
+      name: wire_test_bridge_90
+      operation: add
+      shift: [0,5,0] 

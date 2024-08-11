@@ -661,6 +661,8 @@ cases:
 
 4. Now print again (will have to do 2-3 times) just 1 hole and now fine tune sw_pad value by changing it in ergogen directly.
 
+Config with switch_hole can be found: [part4_switch_hole.yml](./part4_switch_hole.yml)
+
 # 3d stl files (local)
 
 ```shell
@@ -679,3 +681,123 @@ npx @jscad/cli@1 output/cases/switch_plate.jscad -of stla -o switches.stl
 # Generate whole case (ready for thinkercad to be customized)
 npx @jscad/cli@1 output/cases/case.jscad -of stla -o case.stl
 ```
+
+
+# Wire crossing
+
+Life would be so easy if colums & rows could be connected with bare (unisolated) wire.
+
+One issue is that wires have to cross one another...\ 
+
+My personal vision alwas was that this could be solve with some smart 3d printer feature like:
+
+Front             |  Side
+:-------------------------:|:-------------------------:
+![](resources/wire_cross_1.png)  |  ![](resources/wire_cross_2.png)
+
+Logicaly this is seperated into 3 layers:
+
+1. 1 square of specific size (depends on space between rows)
+2. 1 cutout square 1mm wide goes deep down
+3. 1 cutout square 90 degrees, 1.8mm wide, leave thin 'bridge' for wire to cross and seperate from wire bellow.
+
+Then these are combine in "Case:" by add 1, subtract 2, subtract 3.
+
+For test to see if dimension are good:
+
+```yml
+units:
+
+# wire dimensions
+  wire_x: 6
+  wire_y: ky-sx
+  hole_y: 0.8
+  hole_90_y: 1.2
+
+...
+outlines:
+  # for test wire cross
+  pod:
+    - what: rectangle
+      size: [20, 20]
+
+  wire_base:
+    - what: rectangle
+      size: [wire_x, wire_y]
+
+  wire_hole:
+    - what: rectangle
+      size: [wire_x, hole_y]
+  
+  wire_hole_90:
+    - what: rectangle
+      size: [wire_y, hole_90_y]
+...
+
+...
+
+cases:
+  switch_hole:
+    - name: switch_cut_hole
+      extrude: 1.2
+
+...
+  wire_test_pod:
+    - name: pod
+      extrude: 0.5
+  
+  wire_test_base:
+    - name: wire_base
+      extrude: 4
+      shift: [0,0,0.5]
+  
+  wire_test_hole:
+    - name: wire_hole
+      extrude: 6
+      shift: [0,0,1]
+  
+  wire_test_hole_90:
+    - name: wire_hole_90
+      extrude: 6
+      shift: [0,0, 3]
+      rotate: [0,0,90]
+  
+  wire_test_bridge_90:
+    - name: wire_hole_90
+      extrude: 0.3
+      shift: [0,0, 2.7]
+      rotate: [0,0,90]
+  
+  wire_test:
+    - what: case
+      name: wire_test_pod
+      operation: add
+
+    # 1
+    - what: case
+      name: wire_test_base
+      operation: add
+      shift: [0,-5,0] 
+    - what: case
+      name: wire_test_hole
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_test_hole_90
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_test_bridge_90
+      operation: add
+      shift: [0,-5,0] 
+
+    # 2
+    - what: case
+      name: wire_test_base
+      operation: add
+      shift: [0,5,0] 
+    ...
+
+```
+
+Config with wire crossing can be found: [part5_wire_cross.yml](./part5_wire_cross.yml)

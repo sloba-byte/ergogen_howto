@@ -131,26 +131,26 @@ outlines:
         - ref: matrix_pinky_top
           shift: [-sx+side,0.8sy-side]
         - ref: matrix_pinky_bottom
-          shift: [-sx+side,-sy+side]
+          shift: [-sx+side,-0.98sy+side]
         - ref: matrix_middle_bottom
-          shift: [0+side,-1.8sy+side]
+          shift: [0+side,-1.78sy+side]
         # thumb
         - ref: thumbfan_near_thumb
           shift: [-sx+side,-sy+side]
         - ref: thumbfan_home_thumb
-          shift: [0+0.2side,-sy+side]
+          shift: [0+0.2side,-0.95sy+side]
         - ref: thumbfan_far_thumb
           shift: [sx-side,-sy+side]
         - ref: thumbfan_far_thumb
           shift: [sx-side, sy-side]
-        # bottom middle 
+        # bottom middle
         - ref: thumbfan_far_thumb
           shift: [-sx-side, 2sy-side]
         - ref: thumbfan_far_thumb
           shift: [-sx-side, 4.5sy-1.5side]
-        # top middle 
+        # top middle
         - ref: thumbfan_far_thumb
-          shift: [-7sx+side, 4.5sy-1.5side]   
+          shift: [-7sx+side, 4.5sy-1.5side]
         - ref: matrix_inner_top
           shift: [2sx-0.2side, 0.5sy-side]
         - ref: matrix_index_top
