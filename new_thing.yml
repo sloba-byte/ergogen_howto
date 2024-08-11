@@ -1,0 +1,1038 @@
+units:
+# keycap dimension
+  kx: 18
+  ky: 18
+# spread/padding
+  pad: 0.5
+  ks: kx + pad
+  kp: ky + pad
+# switch dimension
+  sw_pad: 0.35
+  sx: 14 + sw_pad
+  sy: 14 + sw_pad
+
+# pad for switch hooks
+  pad_x: 1
+  pad_y: 0
+
+# for case sides 2mm
+  z: 0
+  side: 2
+
+# pass_holes_bellow
+  rect_b_x: 6
+  rect_b_y: ky-sx
+
+# diode_holes_right
+  rect_r_x: 6
+  rect_r_y: kx-sy-1
+
+points:
+  zones:
+    matrix:
+      key:
+        spread: 1ks
+        padding: 1kp
+      columns:
+        pinky:
+        ring:
+          key.splay: -5
+          key.origin: [-12, -16]
+          key.stagger: 11
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -4
+      rows:
+        bottom:
+        home:
+        top:
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-10, -30]
+      columns:
+        near:
+          key.splay: -6
+        home:
+          key.spread: 19
+          key.splay: -38
+          key.origin: [-10, -9]
+        far:
+          key.spread: 19
+          key.splay: -32
+          key.origin: [-9.5, -9]
+      rows:
+        thumb:
+  rotate: -10
+  mirror:
+    ref: matrix_pinky_home
+    distance: 284
+
+outlines:
+  switches:
+    - what: rectangle
+      where: true
+      size: [sx,sy]
+
+  switches_pad:
+    - what: rectangle
+      where: true
+      size: [sx+pad_x,sy+pad_y]
+
+  case:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sx+z,0.8sy-z]
+        - ref: matrix_pinky_bottom
+          shift: [-sx+z,-sy+z]
+        - ref: matrix_middle_bottom
+          shift: [0+z,-1.8sy+z]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sx+z,-sy+z]
+        - ref: thumbfan_home_thumb
+          shift: [0+z,-sy+z]
+        - ref: thumbfan_far_thumb
+          shift: [sx-z,-sy+z]
+        - ref: thumbfan_far_thumb
+          shift: [sx-z, sy-z]
+        # bottom middle
+        - ref: thumbfan_far_thumb
+          shift: [-sx+z, 2sy-z]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+z, 4.5sy-z]
+        # top middle
+        - ref: thumbfan_far_thumb
+          shift: [-7sx+z, 4.5sy-z]
+        - ref: matrix_inner_top
+          shift: [2sx-z, 0.5sy-z]
+        - ref: matrix_index_top
+          shift: [0+z, 1.4sy-z]
+        - ref: matrix_ring_top
+          shift: [0+z, 1.3sy-z]
+      # round corners
+      fillet: 4
+
+  hole:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: thumbfan_far_thumb
+          shift: [sx-2, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+2, sy]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+2, -sy]
+        - ref: thumbfan_far_thumb
+          shift: [sx-2, -sy]
+      # round corners
+      fillet: 4
+
+  switch_cut_hole:
+    - name: hole
+    - operation: subtract
+      name: switches
+
+  combo_case_switches:
+    - name: case
+    - operation: stack
+      name: switches
+
+  case_cut_switches:
+    - name: case
+    - operation: subtract
+      name: switches
+
+  case_cut_switches_pad:
+    - name: case
+    - operation: subtract
+      name: switches_pad
+
+  case_small:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sx+side,0.8sy-side]
+        - ref: matrix_pinky_bottom
+          shift: [-sx+side,-0.98sy+side]
+        - ref: matrix_middle_bottom
+          shift: [0+side,-1.78sy+side]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sx+side,-sy+side]
+        - ref: thumbfan_home_thumb
+          shift: [0+0.2side,-0.95sy+side]
+        - ref: thumbfan_far_thumb
+          shift: [sx-side,-sy+side]
+        - ref: thumbfan_far_thumb
+          shift: [sx-side, sy-side]
+        # bottom middle
+        - ref: thumbfan_far_thumb
+          shift: [-sx-side, 2sy-side]
+        - ref: thumbfan_far_thumb
+          shift: [-sx-side, 4.5sy-1.5side]
+        # top middle
+        - ref: thumbfan_far_thumb
+          shift: [-7sx+side, 4.5sy-1.5side]
+        - ref: matrix_inner_top
+          shift: [2sx-0.2side, 0.5sy-side]
+        - ref: matrix_index_top
+          shift: [0-0.2side, 1.4sy-side]
+        - ref: matrix_ring_top
+          shift: [0+0.2side, 1.3sy-side]
+      # round corners
+      fillet: 4
+
+  case_big:
+    - what: polygon
+      operation: stack
+      points:
+        # left
+        - ref: matrix_pinky_top
+          shift: [-sx-side,0.8sy+side]
+        - ref: matrix_pinky_bottom
+          shift: [-sx-side,-1.05sy-side]
+        - ref: matrix_middle_bottom
+          shift: [0-side,-1.85sy-side]
+        # thumb
+        - ref: thumbfan_near_thumb
+          shift: [-sx-side,-sy-side]
+        - ref: thumbfan_home_thumb
+          shift: [0+0.1side,-1.05sy-side]
+        - ref: thumbfan_far_thumb
+          shift: [sx+side,-sy-side]
+        - ref: thumbfan_far_thumb
+          shift: [sx+side, sy+side]
+        # bottom middle
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, 2sy+side]
+        - ref: thumbfan_far_thumb
+          shift: [-sx+side, 4.5sy+1.5side]
+        # top middle
+        - ref: thumbfan_far_thumb
+          shift: [-7sx-side, 4.5sy+1.5side]
+        - ref: matrix_inner_top
+          shift: [2sx+0.2side, 0.5sy+side]
+        - ref: matrix_index_top
+          shift: [0+0.2side, 1.4sy+side]
+        - ref: matrix_ring_top
+          shift: [0-0.2side, 1.3sy+side]
+      # round corners
+      fillet: 4
+
+  case_sides:
+    - name: case
+    - operation: subtract
+      name: case_small
+
+  case_sides_big:
+    - name: case
+    - operation: stack
+      name: case_big
+
+  pod:
+    - what: rectangle
+      size: [20, 20]
+
+  # bottom hole test
+
+  wire_hood:
+    - what: rectangle
+      size: [rect_b_x, rect_b_y]
+
+  wire_hole:
+    - what: rectangle
+      size: [rect_b_x, 0.6]
+  
+  wire_hole_90:
+    - what: rectangle
+      size: [rect_b_y, 1]
+
+  
+  # diode left test
+
+  diode_hood:
+    - what: rectangle
+      size: [rect_r_x, rect_r_y]
+
+  diode_hole:
+    - what: rectangle
+      size: [1.8, rect_r_y]
+  
+  # wire realdeal
+  wire_hoods:
+  # pinky
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # ring
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+  
+  # middle
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # index
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # inner
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # thumbfan
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_x, rect_b_y]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+      rotate: 90
+
+  wire_hole_1:
+  # pinky
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # ring
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+  
+  # middle
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # index
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # inner
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # thumbfan
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_x, 1]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+      rotate: 90
+
+
+  wire_hole_2_90:
+  # pinky
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # ring
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  
+  # middle
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # index
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # inner
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  
+  # thumbfan
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+
+  - what: rectangle
+    size: [rect_b_y, 1.5]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+
+  switches_hoods:
+    - name: wire_hoods
+    - operation: stack
+      name: switches_pad
+
+  switches_wire_1:
+    - name: wire_hole_1
+    - operation: stack
+      name: switches_pad
+  
+  switches_wire_2:
+    - name: wire_hole_2_90
+    - operation: stack
+      name: switches_pad
+
+  # diodes realdeal
+
+  diode_hoods:
+  # pinky
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+
+  # ring
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_ring_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_ring_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  
+  # middle
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_middle_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_middle_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+
+  # index
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_index_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_index_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+
+  # inner
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_inner_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_inner_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+  
+  # thumbfan
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+  - what: rectangle
+    size: [rect_r_x, rect_r_y]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+
+  
+  diode_holes:
+  # pinky
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+
+  # ring
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_ring_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_ring_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  
+  # middle
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_middle_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_middle_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+
+  # index
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_index_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_index_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+
+  # inner
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_inner_top]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_inner_home]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [-0.25(kx+pad), -0.5(ky+pad)]
+      rotate: 90
+  
+  # thumbfan
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+      rotate: 90
+  - what: rectangle
+    size: [rect_r_x, 1.8]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [0.25(kx-pad), -0.5(ky-pad)]
+      rotate: 90
+  
+  diodes_hoods_swiches:
+    - name: diode_hoods
+    - operation: stack
+      name: switches_pad
+
+  diodes_holes_swiches:
+    - name: diode_holes
+    - operation: stack
+      name: switches_pad
+
+cases:
+  switch_hole:
+    - name: switch_cut_hole
+      extrude: 1.2
+
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.15
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.85
+      shift: [0,0,1.15]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  sides_big:
+    - name: case_sides_big
+      extrude: 20
+      shift: [0,0,0]
+
+  case:
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+
+  # wire test print
+
+  pod_c:
+    - name: pod
+      extrude: 0.5
+
+  wire_hood_c:
+    - name: wire_hood
+      extrude: 4
+      shift: [0,0,0.5]
+
+  wire_hole_c:
+    - name: wire_hole
+      extrude: 6
+      shift: [0,0, 1]
+      rotate: [0,0,0]
+
+  wire_hole_90_c:
+    - name: wire_hole_90
+      extrude: 6
+      shift: [0,0, 3]
+      rotate: [0,0,90]
+  
+  wire_hole_90_cc:
+    - name: wire_hole_90
+      extrude: 0.3
+      shift: [0,0, 2.7]
+      rotate: [0,0,90]
+
+  wire_c:
+    - what: case
+      name: pod_c
+      operation: add
+    - what: case
+      name: wire_hood_c
+      operation: add
+      shift: [0,-5,0]
+    - what: case
+      name: wire_hole_c
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_hole_90_c
+      operation: subtract
+      shift: [0,-5,0]
+    - what: case
+      name: wire_hole_90_cc
+      operation: add
+      shift: [0,-5,0]
+
+    - what: case
+      name: wire_hood_c
+      shift: [0,5,0]
+      operation: add
+    - what: case
+      name: wire_hole_c
+      operation: subtract
+      shift: [0,5,0]
+    - what: case
+      name: wire_hole_90_c
+      operation: subtract
+      shift: [0,5,0]
+    - what: case
+      name: wire_hole_90_cc
+      operation: add
+      shift: [0,5,0]
+  
+  # diode test print
+
+  diode_hood_c:
+    - name: diode_hood
+      extrude: 4
+      shift: [0,0,0.5]
+  
+  diode_hole_90_c:
+    - name: diode_hole
+      extrude: 6
+      shift: [0,0,1]
+      rotate: [0,0,90]
+
+  diode_c:
+    - what: case
+      name: pod_c
+      operation: add
+    - what: case
+      name: diode_hood_c
+      operation: add
+    - what: case
+      name: diode_hole_90_c
+      operation: subtract
+  
+  # real_deal
+
+  # wires at bottom
+  wire_hoods_stl:
+    - name: wire_hoods
+      extrude: 3
+      shift: [0,0,2]
+
+  wire_hole_1_stl:
+    - name: wire_hole_1
+      extrude: 4
+      shift: [0,0,2.3]
+
+  wire_hole_2_90_stl:
+    - name: wire_hole_2_90
+      extrude: 4
+      shift: [0,0,4]
+
+  wire_hole_2_90_bridge_stl:
+    - name: wire_hole_2_90
+      extrude: 0.5
+      shift: [0,0,3.5]
+
+  # diods at left
+  diode_hoods_stl:
+    - name: diode_hoods
+      extrude: 3
+      shift: [0,0,2]
+  
+  diode_holes_stl:
+    - name: diode_holes
+      extrude: 3
+      shift: [0,0,2.5]
+
+  org_case:
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+
+    # bot wires
+    - what: case
+      name: wire_hoods_stl
+      operation: add
+    - what: case
+      name: wire_hole_1_stl
+      operation: subtract
+    - what: case
+      name: wire_hole_2_90_stl
+      operation: subtract
+    - what: case
+      name: wire_hole_2_90_bridge_stl
+      operation: add
+  
+    - what: case
+      name: sides
+      operation: add
