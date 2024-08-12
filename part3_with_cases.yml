@@ -71,7 +71,7 @@ outlines:
       where: true
       size: [sx+2,sy+2]
 
-  case:
+  keyboard:
     - what: polygon
       operation: stack
       points:

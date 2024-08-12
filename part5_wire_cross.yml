@@ -3,14 +3,17 @@ units:
   kx: 18
   ky: 18
 # spread/padding
-  pad_x: 0.2
-  pad_y: 0.2
-  ks: kx + pad_x
-  kp: ky + pad_y
+  pad: 0.5
+  ks: kx + pad
+  kp: ky + pad
 # switch dimension
   sw_pad: 0.2
   sx: 14 + sw_pad
   sy: 14 + sw_pad
+
+# pad for switch hooks
+  pad_x: 1
+  pad_y: 0
 
 # for case sides 2mm
   z: 0
@@ -19,8 +22,8 @@ units:
 # wire dimensions
   wire_x: 6
   wire_y: ky-sx
-  hole_y: 0.8
-  hole_90_y: 1.2
+  hole_y: 1
+  hole_90_y: 1.5
 
 points:
   zones:
@@ -75,7 +78,7 @@ outlines:
   switches_pad:
     - what: rectangle
       where: true
-      size: [sx+2,sy+2]
+      size: [sx+pad_x,sy+pad_y]
 
   case:
     - what: polygon
@@ -210,37 +213,356 @@ outlines:
       size: [wire_y, hole_90_y]
 
   # all wire cross
-  # TODO
+  wires_base:
+    # pinky
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # ring
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+  
+  # middle
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # index
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # inner
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # thumbfan
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_x, wire_y]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+      rotate: 90
+
+  wires_hole:
+  # pinky
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # ring
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+  
+  # middle
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # index
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # inner
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+
+  # thumbfan
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_x, hole_y]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+      rotate: 90
+
+  wires_hole_90:
+  # pinky
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_pinky_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_pinky_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_pinky_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # ring
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_ring_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_ring_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_ring_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  
+  # middle
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_middle_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_middle_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_middle_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # index
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_index_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_index_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_index_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+
+  # inner
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_inner_top]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_inner_home]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [matrix_inner_bottom]
+      shift: [0.15kx, -0.5(ky+pad)]
+      rotate: 90
+  
+  # thumbfan
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [thumbfan_near_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [thumbfan_home_thumb]
+      shift: [-0.6(kx+pad), 0.25(ky+pad)]
+  - what: rectangle
+    size: [wire_y, hole_90_y]
+    where:
+      ref: [thumbfan_far_thumb]
+      shift: [-0.6(kx+pad), 0.45(ky+pad)]
+
+
+  switches_wires_base:
+    - name: wires_base
+    - operation: stack
+      name: switches_pad
+
+  switches_wires_hole:
+    - name: wires_hole
+    - operation: stack
+      name: switches_pad
+
+  switches_wires_hole_90:
+    - name: wires_hole_90
+    - operation: stack
+      name: switches_pad
 
 cases:
-  switch_hole:
+  switch_hole_test:
     - name: switch_cut_hole
       extrude: 1.2
-
-  switch_plate:
-    - name: case_cut_switches
-      extrude: 1.2
-
-  plate:
-    - name: case_cut_switches_pad
-      extrude: 0.8
-      shift: [0,0,1.2]
-
-  sides:
-    - name: case_sides
-      extrude: 20
-      shift: [0,0,2]
-
-  case:
-    - what: case
-      name: sides
-      operation: add
-    - what: case
-      name: plate
-      operation: add
-    - what: case
-      name: switch_plate
-      operation: add
   
   wire_test_pod:
     - name: pod
@@ -254,7 +576,7 @@ cases:
   wire_test_hole:
     - name: wire_hole
       extrude: 6
-      shift: [0,0,1]
+      shift: [0,0,hole_y]
   
   wire_test_hole_90:
     - name: wire_hole_90
@@ -308,3 +630,64 @@ cases:
       name: wire_test_bridge_90
       operation: add
       shift: [0,5,0] 
+  
+  # cross wires 
+  wires_base:
+    - name: wires_base
+      extrude: 4
+      shift: [0,0,0.5]
+  
+  wires_hole:
+    - name: wires_hole
+      extrude: 6
+      shift: [0,0,hole_y]
+  
+  wires_hole_90:
+    - name: wires_hole_90
+      extrude: 6
+      shift: [0,0,3]
+  
+  wires_bridge_90:
+    - name: wires_hole_90
+      extrude: 0.3
+      shift: [0,0,2.7]
+
+  # keyboard parts
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.8
+      shift: [0,0,1.2]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  keyboard:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+    
+    # wires
+    - what: case
+      name: wires_base
+      operation: add
+    - what: case
+      name: wires_hole
+      operation: subtract
+    - what: case
+      name: wires_hole_90
+      operation: subtract
+    - what: case
+      name: wires_bridge_90
+      operation: add

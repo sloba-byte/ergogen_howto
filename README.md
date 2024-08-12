@@ -701,7 +701,7 @@ Logicaly this is seperated into 3 layers:
 2. 1 cutout square 1mm wide goes deep down
 3. 1 cutout square 90 degrees, 1.8mm wide, leave thin 'bridge' for wire to cross and seperate from wire bellow.
 
-Then these are combine in "Case:" by add 1, subtract 2, subtract 3.
+Then these are combine in "Cases:" by add 1, subtract 2, subtract 3.
 
 For test to see if dimension are good:
 
@@ -800,4 +800,85 @@ cases:
 
 ```
 
+Now just need to add all of these as layers:
+
+1. wires_base:
+<img src="./resources/wires_base.svg" alt="wires_base layout">
+
+2. wires_hole:
+<img src="./resources/wires_hole.svg" alt="wires_hole layout">
+
+3. wires_hole_90:
+<img src="./resources/wires_hole_90.svg" alt="wires_hole_90 layout">
+
+
+```yml
+...
+case:
+
+...
+
+ # cross wires 
+  wires_base:
+    - name: wires_base
+      extrude: 4
+      shift: [0,0,0.5]
+  
+  wires_hole:
+    - name: wires_hole
+      extrude: 6
+      shift: [0,0,hole_y]
+  
+  wires_hole_90:
+    - name: wires_hole_90
+      extrude: 6
+      shift: [0,0,3]
+  
+  wires_bridge_90:
+    - name: wires_hole_90
+      extrude: 0.3
+      shift: [0,0,2.7]
+
+  # keyboard parts
+  switch_plate:
+    - name: case_cut_switches
+      extrude: 1.2
+
+  plate:
+    - name: case_cut_switches_pad
+      extrude: 0.8
+      shift: [0,0,1.2]
+
+  sides:
+    - name: case_sides
+      extrude: 20
+      shift: [0,0,2]
+
+  keyboard:
+    - what: case
+      name: sides
+      operation: add
+    - what: case
+      name: plate
+      operation: add
+    - what: case
+      name: switch_plate
+      operation: add
+    
+    # wires
+    - what: case
+      name: wires_base
+      operation: add
+    - what: case
+      name: wires_hole
+      operation: subtract
+    - what: case
+      name: wires_hole_90
+      operation: subtract
+    - what: case
+      name: wires_bridge_90
+      operation: add
+```
+
 Config with wire crossing can be found: [part5_wire_cross.yml](./part5_wire_cross.yml)
+
